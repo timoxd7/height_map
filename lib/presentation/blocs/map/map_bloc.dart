@@ -19,6 +19,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<UpdateUserPosition>(_onUpdateUserPosition);
     on<CenterOnUser>(_onCenterOnUser);
     on<ZoomChanged>(_onZoomChanged);
+    on<ToggleRotationMode>(_onToggleRotationMode);
+    on<MapRotationChanged>(_onMapRotationChanged);
   }
 
   Future<void> _onMapTapped(MapTapped event, Emitter<MapState> emit) async {
@@ -141,12 +143,21 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   }
 
   void _onCenterOnUser(CenterOnUser event, Emitter<MapState> emit) {
-    debugPrint('[MapBloc] CenterOnUser event received');
+    debugPrint(
+      '[MapBloc] CenterOnUser event received, withZoom: ${event.withZoom}',
+    );
     final currentState = _getOrCreateReadyState();
     debugPrint('[MapBloc] User position: ${currentState.userPosition}');
     if (currentState.userPosition != null) {
-      debugPrint('[MapBloc] Emitting shouldCenterOnUser = true');
-      emit(currentState.copyWith(shouldCenterOnUser: true));
+      debugPrint(
+        '[MapBloc] Emitting shouldCenterOnUser = true, shouldZoomOnUser = ${event.withZoom}',
+      );
+      emit(
+        currentState.copyWith(
+          shouldCenterOnUser: true,
+          shouldZoomOnUser: event.withZoom,
+        ),
+      );
     } else {
       debugPrint('[MapBloc] No user position available - cannot center');
     }
@@ -155,6 +166,56 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void _onZoomChanged(ZoomChanged event, Emitter<MapState> emit) {
     final currentState = _getOrCreateReadyState();
     emit(currentState.copyWith(currentZoom: event.zoom));
+  }
+
+  void _onToggleRotationMode(ToggleRotationMode event, Emitter<MapState> emit) {
+    final currentState = _getOrCreateReadyState();
+    final currentMode = currentState.rotationMode;
+
+    RotationMode newMode;
+    double newRotation = currentState.mapRotation;
+
+    switch (currentMode) {
+      case RotationMode.free:
+        // Transition from free to northOriented and reset rotation to north
+        newMode = RotationMode.northOriented;
+        newRotation = 0.0;
+        break;
+      case RotationMode.northOriented:
+        // Transition from northOriented to locked
+        newMode = RotationMode.locked;
+        newRotation = 0.0;
+        break;
+      case RotationMode.locked:
+        // Transition from locked to northOriented
+        newMode = RotationMode.northOriented;
+        newRotation = 0.0;
+        break;
+    }
+
+    debugPrint('[MapBloc] Rotation mode changed: $currentMode -> $newMode');
+    emit(
+      currentState.copyWith(rotationMode: newMode, mapRotation: newRotation),
+    );
+  }
+
+  void _onMapRotationChanged(MapRotationChanged event, Emitter<MapState> emit) {
+    final currentState = _getOrCreateReadyState();
+
+    // If in northOriented mode and user rotates, switch to free mode
+    if (currentState.rotationMode == RotationMode.northOriented) {
+      debugPrint('[MapBloc] User rotated map, switching to free mode');
+      emit(
+        currentState.copyWith(
+          rotationMode: RotationMode.free,
+          mapRotation: event.rotation,
+        ),
+      );
+    } else if (currentState.rotationMode == RotationMode.free) {
+      // Just update rotation in free mode
+      emit(currentState.copyWith(mapRotation: event.rotation));
+    }
+    // In locked mode, ignore rotation changes
   }
 
   /// Helper to get current state as MapReady or create a new one

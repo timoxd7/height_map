@@ -75,23 +75,59 @@ class _HomePageState extends State<HomePage> {
                 if (state is MapReady && state.hasSelectedPoint) {
                   return const SizedBox.shrink();
                 }
-                return FloatingActionButton(
-                  heroTag: 'center_on_user',
-                  onPressed: () {
-                    debugPrint('[HomePage] Center on user FAB pressed');
-                    final mapBloc = context.read<MapBloc>();
-                    final currentState = mapBloc.state;
+                return GestureDetector(
+                  onLongPress: () {
                     debugPrint(
-                      '[HomePage] Current MapBloc state: ${currentState.runtimeType}',
+                      '[HomePage] Center on user FAB long pressed - centering with zoom',
                     );
-                    if (currentState is MapReady) {
-                      debugPrint(
-                        '[HomePage] User position in state: ${currentState.userPosition}',
-                      );
-                    }
-                    mapBloc.add(const CenterOnUser());
+                    final mapBloc = context.read<MapBloc>();
+                    mapBloc.add(const CenterOnUser(withZoom: true));
                   },
-                  child: const Icon(Icons.my_location),
+                  child: FloatingActionButton(
+                    heroTag: 'center_on_user',
+                    onPressed: () {
+                      debugPrint('[HomePage] Center on user FAB pressed');
+                      final mapBloc = context.read<MapBloc>();
+                      final currentState = mapBloc.state;
+                      debugPrint(
+                        '[HomePage] Current MapBloc state: ${currentState.runtimeType}',
+                      );
+                      if (currentState is MapReady) {
+                        debugPrint(
+                          '[HomePage] User position in state: ${currentState.userPosition}',
+                        );
+                      }
+                      mapBloc.add(const CenterOnUser());
+                    },
+                    child: const Icon(Icons.my_location),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          // Rotation lock button above center button
+          Positioned(
+            right: 16,
+            bottom: MediaQuery.of(context).padding.bottom + 172,
+            child: BlocBuilder<MapBloc, MapState>(
+              builder: (context, state) {
+                // Hide button when elevation card is shown
+                if (state is MapReady && state.hasSelectedPoint) {
+                  return const SizedBox.shrink();
+                }
+
+                final rotationMode = state is MapReady
+                    ? state.rotationMode
+                    : RotationMode.free;
+                final mapRotation = state is MapReady ? state.mapRotation : 0.0;
+
+                return RotationLockButton(
+                  rotationMode: rotationMode,
+                  mapRotation: mapRotation,
+                  onPressed: () {
+                    context.read<MapBloc>().add(const ToggleRotationMode());
+                  },
                 );
               },
             ),

@@ -20,6 +20,8 @@ class LocationDataSource {
   Stream<HeightMeasurement> get heightStream => _heightController.stream;
 
   /// Get current position
+  /// First tries to get the last known position for quick response,
+  /// then falls back to getting current position if needed.
   FutureResult<Position> getCurrentPosition() async {
     debugPrint('[LocationDS] Getting current position');
     try {
@@ -29,7 +31,25 @@ class LocationDataSource {
         return Left(permission.fold((l) => l, (r) => const UnknownFailure()));
       }
 
-      debugPrint('[LocationDS] Permission OK, fetching position');
+      // First try to get last known position for quick response
+      debugPrint('[LocationDS] Trying to get last known position first');
+      final lastKnown = await geo.Geolocator.getLastKnownPosition();
+      if (lastKnown != null) {
+        debugPrint(
+          '[LocationDS] Last known position: ${lastKnown.latitude}, ${lastKnown.longitude}, alt: ${lastKnown.altitude}m',
+        );
+        return Right(
+          Position(
+            latitude: lastKnown.latitude,
+            longitude: lastKnown.longitude,
+            altitude: lastKnown.altitude,
+          ),
+        );
+      }
+
+      debugPrint(
+        '[LocationDS] No last known position, fetching current position',
+      );
       final position = await geo.Geolocator.getCurrentPosition(
         locationSettings: const geo.LocationSettings(
           accuracy: geo.LocationAccuracy.high,

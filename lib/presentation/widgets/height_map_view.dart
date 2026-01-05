@@ -18,6 +18,22 @@ class HeightMapView extends StatefulWidget {
 class _HeightMapViewState extends State<HeightMapView> {
   final MapController _mapController = MapController();
   bool _isFirstLocation = true;
+  double _lastRotation = 0.0;
+
+  /// Determines if map rotation should be updated based on state changes
+  bool _shouldUpdateMapRotation(MapState previous, MapState current) {
+    final prevRotation = previous is MapReady ? previous.mapRotation : 0.0;
+    final currRotation = current is MapReady ? current.mapRotation : 0.0;
+    final prevMode = previous is MapReady
+        ? previous.rotationMode
+        : RotationMode.free;
+    final currMode = current is MapReady
+        ? current.rotationMode
+        : RotationMode.free;
+    // Only trigger when mode changes (not for every rotation update during free mode)
+    return prevMode != currMode ||
+        (currMode != RotationMode.free && prevRotation != currRotation);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +82,28 @@ class _HeightMapViewState extends State<HeightMapView> {
             );
             if (state is MapReady && state.userPosition != null) {
               debugPrint(
-                '[HeightMapView] Centering on user: ${state.userPosition!.latitude}, ${state.userPosition!.longitude}',
+                '[HeightMapView] Centering on user: ${state.userPosition!.latitude}, ${state.userPosition!.longitude}, withZoom: ${state.shouldZoomOnUser}',
               );
-              _animateToPosition(state.userPosition!);
+              _animateToPosition(
+                state.userPosition!,
+                withZoom: state.shouldZoomOnUser,
+              );
             } else {
               final userPos = state is MapReady ? state.userPosition : null;
               debugPrint(
                 '[HeightMapView] Cannot center - state: $state, userPosition: $userPos',
               );
+            }
+          },
+        ),
+        BlocListener<MapBloc, MapState>(
+          listenWhen: _shouldUpdateMapRotation,
+          listener: (context, state) {
+            if (state is MapReady) {
+              debugPrint(
+                '[HeightMapView] Rotating map to ${state.mapRotation} degrees',
+              );
+              _mapController.rotate(state.mapRotation);
             }
           },
         ),
@@ -87,8 +117,12 @@ class _HeightMapViewState extends State<HeightMapView> {
                   : null;
 
               Position? selectedPosition;
+              RotationMode rotationMode = RotationMode.free;
+              double mapRotation = 0.0;
               if (mapState is MapReady) {
                 selectedPosition = mapState.selectedPosition;
+                rotationMode = mapState.rotationMode;
+                mapRotation = mapState.mapRotation;
               }
 
               return FlutterMap(
@@ -100,6 +134,12 @@ class _HeightMapViewState extends State<HeightMapView> {
                   initialZoom: AppConstants.defaultZoom,
                   minZoom: AppConstants.minZoom,
                   maxZoom: AppConstants.maxZoom,
+                  initialRotation: mapRotation,
+                  interactionOptions: InteractionOptions(
+                    flags: rotationMode == RotationMode.locked
+                        ? InteractiveFlag.all & ~InteractiveFlag.rotate
+                        : InteractiveFlag.all,
+                  ),
                   onTap: (tapPosition, point) {
                     context.read<MapBloc>().add(
                       MapTapped(
@@ -112,7 +152,17 @@ class _HeightMapViewState extends State<HeightMapView> {
                   },
                   onPositionChanged: (position, hasGesture) {
                     if (hasGesture) {
-                      context.read<MapBloc>().add(ZoomChanged(position.zoom));
+                      final rotation = _mapController.camera.rotation;
+                      context.read<MapBloc>().add(
+                        ZoomChanged(_mapController.camera.zoom),
+                      );
+                      // Only dispatch rotation change if it actually changed
+                      if ((rotation - _lastRotation).abs() > 0.1) {
+                        _lastRotation = rotation;
+                        context.read<MapBloc>().add(
+                          MapRotationChanged(rotation),
+                        );
+                      }
                     }
                   },
                 ),
@@ -158,10 +208,10 @@ class _HeightMapViewState extends State<HeightMapView> {
     );
   }
 
-  void _animateToPosition(Position position) {
+  void _animateToPosition(Position position, {bool withZoom = false}) {
     _mapController.move(
       LatLng(position.latitude, position.longitude),
-      _mapController.camera.zoom,
+      withZoom ? AppConstants.defaultZoom : _mapController.camera.zoom,
     );
   }
 

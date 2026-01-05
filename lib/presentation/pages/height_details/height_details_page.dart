@@ -24,6 +24,17 @@ class HeightDetailsPage extends StatelessWidget {
               context.read<HeightBloc>().add(const StartHeightMonitoring());
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () {
+              showLicensePage(
+                context: context,
+                applicationName: 'Height Map',
+                applicationVersion: '1.0.0',
+                applicationLegalese: '© 2026 ',
+              );
+            },
+          ),
         ],
       ),
       body: BlocBuilder<HeightBloc, HeightState>(
@@ -153,8 +164,9 @@ class _LoadedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + bottomPadding + 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
