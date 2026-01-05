@@ -114,60 +114,20 @@ jobs:
           
           cat changelog.txt
       
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.next_tag }}
-          release_name: Release ${{ steps.version.outputs.next_tag }}
+          name: Release ${{ steps.version.outputs.next_tag }}
           body_path: changelog.txt
           draft: false
           prerelease: false
-      
-      - name: Upload Universal APK
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/height-map-${{ steps.version.outputs.next_tag }}-universal.apk
-          asset_name: height-map-${{ steps.version.outputs.next_tag }}-universal.apk
-          asset_content_type: application/vnd.android.package-archive
-      
-      - name: Upload ARM64 APK
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/height-map-${{ steps.version.outputs.next_tag }}-arm64-v8a.apk
-          asset_name: height-map-${{ steps.version.outputs.next_tag }}-arm64-v8a.apk
-          asset_content_type: application/vnd.android.package-archive
-        continue-on-error: true
-      
-      - name: Upload ARMv7 APK
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/height-map-${{ steps.version.outputs.next_tag }}-armeabi-v7a.apk
-          asset_name: height-map-${{ steps.version.outputs.next_tag }}-armeabi-v7a.apk
-          asset_content_type: application/vnd.android.package-archive
-        continue-on-error: true
-      
-      - name: Upload x86_64 APK
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/height-map-${{ steps.version.outputs.next_tag }}-x86_64.apk
-          asset_name: height-map-${{ steps.version.outputs.next_tag }}-x86_64.apk
-          asset_content_type: application/vnd.android.package-archive
-        continue-on-error: true
+          files: |
+            build/app/outputs/flutter-apk/height-map-${{ steps.version.outputs.next_tag }}-universal.apk
+            build/app/outputs/flutter-apk/height-map-${{ steps.version.outputs.next_tag }}-arm64-v8a.apk
+            build/app/outputs/flutter-apk/height-map-${{ steps.version.outputs.next_tag }}-armeabi-v7a.apk
+            build/app/outputs/flutter-apk/height-map-${{ steps.version.outputs.next_tag }}-x86_64.apk
+          fail_on_unmatched_files: false
       
       - name: Cleanup artifacts
         if: always()
