@@ -18,6 +18,17 @@ class HeightMapView extends StatefulWidget {
 class _HeightMapViewState extends State<HeightMapView> {
   final MapController _mapController = MapController();
   bool _isFirstLocation = true;
+  double _lastRotation = 0.0;
+
+  /// Determines if map rotation should be updated based on state changes
+  bool _shouldUpdateMapRotation(MapState previous, MapState current) {
+    final prevRotation = previous is MapReady ? previous.mapRotation : 0.0;
+    final currRotation = current is MapReady ? current.mapRotation : 0.0;
+    final prevMode = previous is MapReady ? previous.rotationMode : RotationMode.free;
+    final currMode = current is MapReady ? current.rotationMode : RotationMode.free;
+    // Only trigger when mode changes (not for every rotation update during free mode)
+    return prevMode != currMode || (currMode != RotationMode.free && prevRotation != currRotation);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +89,7 @@ class _HeightMapViewState extends State<HeightMapView> {
           },
         ),
         BlocListener<MapBloc, MapState>(
-          listenWhen: (previous, current) {
-            // Listen for rotation changes when mode changes
-            final prevRotation = previous is MapReady ? previous.mapRotation : 0.0;
-            final currRotation = current is MapReady ? current.mapRotation : 0.0;
-            final prevMode = previous is MapReady ? previous.rotationMode : RotationMode.free;
-            final currMode = current is MapReady ? current.rotationMode : RotationMode.free;
-            // Only trigger when mode changes (not for every rotation update during free mode)
-            return prevMode != currMode || (currMode != RotationMode.free && prevRotation != currRotation);
-          },
+          listenWhen: _shouldUpdateMapRotation,
           listener: (context, state) {
             if (state is MapReady) {
               debugPrint('[HeightMapView] Rotating map to ${state.mapRotation} degrees');
@@ -141,7 +144,11 @@ class _HeightMapViewState extends State<HeightMapView> {
                     if (hasGesture) {
                       final rotation = _mapController.camera.rotation;
                       context.read<MapBloc>().add(ZoomChanged(_mapController.camera.zoom));
-                      context.read<MapBloc>().add(MapRotationChanged(rotation));
+                      // Only dispatch rotation change if it actually changed
+                      if ((rotation - _lastRotation).abs() > 0.1) {
+                        _lastRotation = rotation;
+                        context.read<MapBloc>().add(MapRotationChanged(rotation));
+                      }
                     }
                   },
                 ),
