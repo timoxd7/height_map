@@ -29,7 +29,7 @@ class RotationLockButton extends StatelessWidget {
       case RotationMode.free:
         // Show compass needle rotating with the map
         return Transform.rotate(
-          angle: -mapRotation * math.pi / 180,
+          angle: mapRotation * math.pi / 180,
           child: const Icon(Icons.navigation),
         );
       case RotationMode.northOriented:

@@ -56,7 +56,13 @@ class UpdateUserPosition extends MapEvent {
 
 /// Event to center map on user location
 class CenterOnUser extends MapEvent {
-  const CenterOnUser();
+  /// If true, also zooms in to the default zoom level
+  final bool withZoom;
+  
+  const CenterOnUser({this.withZoom = false});
+
+  @override
+  List<Object?> get props => [withZoom];
 }
 
 /// Event to change map zoom level

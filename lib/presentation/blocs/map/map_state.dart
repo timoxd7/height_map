@@ -5,8 +5,10 @@ import '../../../data/models/models.dart';
 enum RotationMode {
   /// Free rotation with compass needle showing current orientation
   free,
+
   /// North-oriented with compass needle
   northOriented,
+
   /// Locked to north with lock icon
   locked,
 }
@@ -33,6 +35,7 @@ class MapReady extends MapState {
   final String? errorMessage;
   final double currentZoom;
   final bool shouldCenterOnUser;
+  final bool shouldZoomOnUser;
   final RotationMode rotationMode;
   final double mapRotation;
 
@@ -44,6 +47,7 @@ class MapReady extends MapState {
     this.errorMessage,
     this.currentZoom = 13.0,
     this.shouldCenterOnUser = false,
+    this.shouldZoomOnUser = false,
     this.rotationMode = RotationMode.free,
     this.mapRotation = 0.0,
   });
@@ -57,6 +61,7 @@ class MapReady extends MapState {
     errorMessage,
     currentZoom,
     shouldCenterOnUser,
+    shouldZoomOnUser,
     rotationMode,
     mapRotation,
   ];
@@ -69,6 +74,7 @@ class MapReady extends MapState {
     String? errorMessage,
     double? currentZoom,
     bool? shouldCenterOnUser,
+    bool? shouldZoomOnUser,
     RotationMode? rotationMode,
     double? mapRotation,
     bool clearSelectedPosition = false,
@@ -87,6 +93,7 @@ class MapReady extends MapState {
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
       currentZoom: currentZoom ?? this.currentZoom,
       shouldCenterOnUser: shouldCenterOnUser ?? false,
+      shouldZoomOnUser: shouldZoomOnUser ?? false,
       rotationMode: rotationMode ?? this.rotationMode,
       mapRotation: mapRotation ?? this.mapRotation,
     );
