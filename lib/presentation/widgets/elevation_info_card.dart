@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/extensions/double_extensions.dart';
 import '../../data/models/models.dart';
@@ -69,7 +70,7 @@ class ElevationInfoCard extends StatelessWidget {
         const SizedBox(width: 16),
         Expanded(
           child: Text(
-            'Fetching elevation data...',
+            'elevation.fetchingData'.tr(),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
@@ -121,7 +122,7 @@ class ElevationInfoCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Selected Point',
+              'elevation.selectedPoint'.tr(),
               style: Theme.of(
                 context,
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -140,7 +141,7 @@ class ElevationInfoCard extends StatelessWidget {
           children: [
             Expanded(
               child: _ElevationTile(
-                label: 'Elevation',
+                label: 'elevation.elevation'.tr(),
                 value: selectedElevation.toMetersString(decimals: 0),
                 icon: Icons.terrain,
                 color: Theme.of(context).colorScheme.primary,
@@ -149,7 +150,7 @@ class ElevationInfoCard extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _ElevationTile(
-                label: 'Difference',
+                label: 'elevation.difference'.tr(),
                 value: difference.toDifferenceString(decimals: 0),
                 icon: isHigher ? Icons.arrow_upward : Icons.arrow_downward,
                 color: isHigher ? Colors.orange : Colors.blue,
@@ -176,7 +177,9 @@ class ElevationInfoCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isHigher ? 'Higher than your position' : 'Lower than your position',
+          isHigher
+              ? 'elevation.higherThanPosition'.tr()
+              : 'elevation.lowerThanPosition'.tr(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Theme.of(
               context,

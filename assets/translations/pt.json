@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Mapa de altitude"
+  },
+  "home": {
+    "centerOnUser": "Centralizar na localização do usuário"
+  },
+  "permission": {
+    "locationRequired": "Permissão de localização necessária",
+    "openSettings": "Abrir configurações",
+    "grantPermission": "Conceder permissão",
+    "retry": "Tentar novamente",
+    "serviceDisabled": "Serviços de localização desativados",
+    "enableLocation": "Por favor, ative os serviços de localização para usar este aplicativo."
+  },
+  "height": {
+    "altitudeDetails": "Detalhes da altitude",
+    "currentAltitude": "Altitude atual",
+    "meters": "metros",
+    "source": "Fonte: {source}",
+    "noAltitudeData": "Nenhum dado de altitude disponível",
+    "noAltitudeYet": "Ainda sem dados de altitude",
+    "dataWillAppear": "Os dados aparecerão quando os sensores estiverem prontos",
+    "loading": "Carregando...",
+    "loadingSensorData": "Carregando dados do sensor...",
+    "error": "Erro"
+  },
+  "elevation": {
+    "selectedPoint": "Ponto selecionado",
+    "elevation": "Elevação",
+    "difference": "Diferença",
+    "fetchingData": "Buscando dados de elevação...",
+    "higherThanPosition": "Mais alto que sua posição",
+    "lowerThanPosition": "Mais baixo que sua posição"
+  },
+  "sensors": {
+    "readings": "Leituras dos sensores",
+    "notAvailable": "Sensor não disponível",
+    "waitingForData": "Aguardando dados...",
+    "accuracy": "Precisão",
+    "accuracyValue": "±{value} m",
+    "unknown": "Desconhecido",
+    "lastUpdate": "Última atualização",
+    "reliability": "Confiabilidade",
+    "high": "Alta",
+    "low": "Baixa",
+    "unavailable": "Indisponível",
+    "loadingStatus": "Carregando",
+    "active": "Ativo",
+    "lowQuality": "Baixa qualidade",
+    "aboutSensors": "Sobre os sensores de altitude",
+    "gps": {
+      "name": "GPS",
+      "description": "Altitude por satélite",
+      "info": "Usa sinais de satélite. A precisão varia (tipicamente ±10-50m). Funciona ao ar livre."
+    },
+    "barometer": {
+      "name": "Barômetro",
+      "description": "Sensor de pressão atmosférica",
+      "info": "Mede a pressão do ar. Muito responsivo a mudanças, mas precisa de calibração. Afetado pelo clima."
+    },
+    "api": {
+      "name": "API de elevação",
+      "description": "Dados de elevação do terreno",
+      "info": "Usa dados de elevação do terreno. Mais preciso ao nível do solo, mas requer internet."
+    },
+    "unknownSource": {
+      "name": "Desconhecido",
+      "description": "Fonte desconhecida"
+    }
+  },
+  "time": {
+    "justNow": "Agora mesmo",
+    "secondsAgo": "há {count}s",
+    "minutesAgo": "há {count}m",
+    "hoursAgo": "há {count}h"
+  },
+  "units": {
+    "m": "m",
+    "ft": "ft"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Höhenkarte"
+  },
+  "home": {
+    "centerOnUser": "Auf Benutzerstandort zentrieren"
+  },
+  "permission": {
+    "locationRequired": "Standortberechtigung erforderlich",
+    "openSettings": "Einstellungen öffnen",
+    "grantPermission": "Berechtigung erteilen",
+    "retry": "Erneut versuchen",
+    "serviceDisabled": "Standortdienste deaktiviert",
+    "enableLocation": "Bitte aktivieren Sie die Standortdienste, um diese App zu nutzen."
+  },
+  "height": {
+    "altitudeDetails": "Höhendetails",
+    "currentAltitude": "Aktuelle Höhe",
+    "meters": "Meter",
+    "source": "Quelle: {source}",
+    "noAltitudeData": "Keine Höhendaten verfügbar",
+    "noAltitudeYet": "Noch keine Höhendaten",
+    "dataWillAppear": "Daten werden angezeigt, sobald die Sensoren bereit sind",
+    "loading": "Laden...",
+    "loadingSensorData": "Lade Sensordaten...",
+    "error": "Fehler"
+  },
+  "elevation": {
+    "selectedPoint": "Ausgewählter Punkt",
+    "elevation": "Höhe",
+    "difference": "Differenz",
+    "fetchingData": "Lade Höhendaten...",
+    "higherThanPosition": "Höher als Ihre Position",
+    "lowerThanPosition": "Niedriger als Ihre Position"
+  },
+  "sensors": {
+    "readings": "Sensormessungen",
+    "notAvailable": "Sensor nicht verfügbar",
+    "waitingForData": "Warte auf Daten...",
+    "accuracy": "Genauigkeit",
+    "accuracyValue": "±{value} m",
+    "unknown": "Unbekannt",
+    "lastUpdate": "Letzte Aktualisierung",
+    "reliability": "Zuverlässigkeit",
+    "high": "Hoch",
+    "low": "Niedrig",
+    "unavailable": "Nicht verfügbar",
+    "loadingStatus": "Lädt",
+    "active": "Aktiv",
+    "lowQuality": "Niedrige Qualität",
+    "aboutSensors": "Über Höhensensoren",
+    "gps": {
+      "name": "GPS",
+      "description": "Satellitenbasierte Höhe",
+      "info": "Nutzt Satellitensignale. Genauigkeit variiert (typischerweise ±10-50m). Funktioniert im Freien."
+    },
+    "barometer": {
+      "name": "Barometer",
+      "description": "Luftdrucksensor",
+      "info": "Misst Luftdruck. Reagiert sehr schnell auf Änderungen, muss aber kalibriert werden. Wird vom Wetter beeinflusst."
+    },
+    "api": {
+      "name": "Höhen-API",
+      "description": "Geländehöhendaten",
+      "info": "Verwendet Geländehöhendaten. Am genauesten für Bodenniveau, benötigt aber Internet."
+    },
+    "unknownSource": {
+      "name": "Unbekannt",
+      "description": "Unbekannte Quelle"
+    }
+  },
+  "time": {
+    "justNow": "Gerade eben",
+    "secondsAgo": "vor {count}s",
+    "minutesAgo": "vor {count}m",
+    "hoursAgo": "vor {count}h"
+  },
+  "units": {
+    "m": "m",
+    "ft": "ft"
+  }
+}
