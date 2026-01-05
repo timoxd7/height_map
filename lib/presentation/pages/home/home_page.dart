@@ -97,6 +97,35 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
+          // Rotation lock button above center button
+          Positioned(
+            right: 16,
+            bottom: MediaQuery.of(context).padding.bottom + 172,
+            child: BlocBuilder<MapBloc, MapState>(
+              builder: (context, state) {
+                // Hide button when elevation card is shown
+                if (state is MapReady && state.hasSelectedPoint) {
+                  return const SizedBox.shrink();
+                }
+                
+                final rotationMode = state is MapReady 
+                    ? state.rotationMode 
+                    : RotationMode.free;
+                final mapRotation = state is MapReady 
+                    ? state.mapRotation 
+                    : 0.0;
+                
+                return RotationLockButton(
+                  rotationMode: rotationMode,
+                  mapRotation: mapRotation,
+                  onPressed: () {
+                    context.read<MapBloc>().add(const ToggleRotationMode());
+                  },
+                );
+              },
+            ),
+          ),
+
           // Error overlay for location issues
           BlocBuilder<LocationBloc, LocationState>(
             builder: (context, state) {

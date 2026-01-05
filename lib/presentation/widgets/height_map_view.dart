@@ -77,6 +77,20 @@ class _HeightMapViewState extends State<HeightMapView> {
             }
           },
         ),
+        BlocListener<MapBloc, MapState>(
+          listenWhen: (previous, current) {
+            // Listen for rotation changes
+            final prevRotation = previous is MapReady ? previous.mapRotation : 0.0;
+            final currRotation = current is MapReady ? current.mapRotation : 0.0;
+            return prevRotation != currRotation;
+          },
+          listener: (context, state) {
+            if (state is MapReady) {
+              debugPrint('[HeightMapView] Rotating map to ${state.mapRotation} degrees');
+              _mapController.rotate(state.mapRotation);
+            }
+          },
+        ),
       ],
       child: BlocBuilder<MapBloc, MapState>(
         builder: (context, mapState) {
@@ -87,8 +101,12 @@ class _HeightMapViewState extends State<HeightMapView> {
                   : null;
 
               Position? selectedPosition;
+              RotationMode rotationMode = RotationMode.free;
+              double mapRotation = 0.0;
               if (mapState is MapReady) {
                 selectedPosition = mapState.selectedPosition;
+                rotationMode = mapState.rotationMode;
+                mapRotation = mapState.mapRotation;
               }
 
               return FlutterMap(
@@ -100,6 +118,12 @@ class _HeightMapViewState extends State<HeightMapView> {
                   initialZoom: AppConstants.defaultZoom,
                   minZoom: AppConstants.minZoom,
                   maxZoom: AppConstants.maxZoom,
+                  initialRotation: mapRotation,
+                  interactionOptions: InteractionOptions(
+                    flags: rotationMode == RotationMode.locked
+                        ? InteractiveFlag.all & ~InteractiveFlag.rotate
+                        : InteractiveFlag.all,
+                  ),
                   onTap: (tapPosition, point) {
                     context.read<MapBloc>().add(
                       MapTapped(
@@ -113,6 +137,12 @@ class _HeightMapViewState extends State<HeightMapView> {
                   onPositionChanged: (position, hasGesture) {
                     if (hasGesture) {
                       context.read<MapBloc>().add(ZoomChanged(position.zoom));
+                      // Track rotation changes from user gestures
+                      if (position.rotation != null) {
+                        context.read<MapBloc>().add(
+                          MapRotationChanged(position.rotation!),
+                        );
+                      }
                     }
                   },
                 ),

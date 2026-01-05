@@ -1,6 +1,16 @@
 import 'package:equatable/equatable.dart';
 import '../../../data/models/models.dart';
 
+/// Rotation lock modes for the map
+enum RotationMode {
+  /// Free rotation with compass needle showing current orientation
+  free,
+  /// North-oriented with compass needle
+  northOriented,
+  /// Locked to north with lock icon
+  locked,
+}
+
 /// States for the map BLoC
 abstract class MapState extends Equatable {
   const MapState();
@@ -23,6 +33,8 @@ class MapReady extends MapState {
   final String? errorMessage;
   final double currentZoom;
   final bool shouldCenterOnUser;
+  final RotationMode rotationMode;
+  final double mapRotation;
 
   const MapReady({
     this.userPosition,
@@ -32,6 +44,8 @@ class MapReady extends MapState {
     this.errorMessage,
     this.currentZoom = 13.0,
     this.shouldCenterOnUser = false,
+    this.rotationMode = RotationMode.free,
+    this.mapRotation = 0.0,
   });
 
   @override
@@ -43,6 +57,8 @@ class MapReady extends MapState {
     errorMessage,
     currentZoom,
     shouldCenterOnUser,
+    rotationMode,
+    mapRotation,
   ];
 
   MapReady copyWith({
@@ -53,6 +69,8 @@ class MapReady extends MapState {
     String? errorMessage,
     double? currentZoom,
     bool? shouldCenterOnUser,
+    RotationMode? rotationMode,
+    double? mapRotation,
     bool clearSelectedPosition = false,
     bool clearElevation = false,
     bool clearError = false,
@@ -69,6 +87,8 @@ class MapReady extends MapState {
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
       currentZoom: currentZoom ?? this.currentZoom,
       shouldCenterOnUser: shouldCenterOnUser ?? false,
+      rotationMode: rotationMode ?? this.rotationMode,
+      mapRotation: mapRotation ?? this.mapRotation,
     );
   }
 

@@ -68,3 +68,18 @@ class ZoomChanged extends MapEvent {
   @override
   List<Object?> get props => [zoom];
 }
+
+/// Event to toggle rotation lock mode
+class ToggleRotationMode extends MapEvent {
+  const ToggleRotationMode();
+}
+
+/// Event when map rotation changes (from user gesture)
+class MapRotationChanged extends MapEvent {
+  final double rotation;
+
+  const MapRotationChanged(this.rotation);
+
+  @override
+  List<Object?> get props => [rotation];
+}
