@@ -6,6 +6,10 @@ A modern Flutter application that displays altitude information from multiple se
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-lightgrey.svg)
 
+## NOTICE
+
+Yep, this is AI generated (Claude Opus 4.5). For such a simple app, was the simplest way. So, keep this in mind, this app might have bugs, i just tested it once by myself, but it seems to work.
+
 ## Features
 
 ### 🏔️ Multi-Sensor Altitude Display
