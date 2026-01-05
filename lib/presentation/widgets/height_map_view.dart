@@ -79,10 +79,13 @@ class _HeightMapViewState extends State<HeightMapView> {
         ),
         BlocListener<MapBloc, MapState>(
           listenWhen: (previous, current) {
-            // Listen for rotation changes
+            // Listen for rotation changes when mode changes
             final prevRotation = previous is MapReady ? previous.mapRotation : 0.0;
             final currRotation = current is MapReady ? current.mapRotation : 0.0;
-            return prevRotation != currRotation;
+            final prevMode = previous is MapReady ? previous.rotationMode : RotationMode.free;
+            final currMode = current is MapReady ? current.rotationMode : RotationMode.free;
+            // Only trigger when mode changes (not for every rotation update during free mode)
+            return prevMode != currMode || (currMode != RotationMode.free && prevRotation != currRotation);
           },
           listener: (context, state) {
             if (state is MapReady) {
@@ -136,13 +139,9 @@ class _HeightMapViewState extends State<HeightMapView> {
                   },
                   onPositionChanged: (position, hasGesture) {
                     if (hasGesture) {
-                      context.read<MapBloc>().add(ZoomChanged(position.zoom));
-                      // Track rotation changes from user gestures
-                      if (position.rotation != null) {
-                        context.read<MapBloc>().add(
-                          MapRotationChanged(position.rotation!),
-                        );
-                      }
+                      final rotation = _mapController.camera.rotation;
+                      context.read<MapBloc>().add(ZoomChanged(_mapController.camera.zoom));
+                      context.read<MapBloc>().add(MapRotationChanged(rotation));
                     }
                   },
                 ),
