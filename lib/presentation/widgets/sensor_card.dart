@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/extensions/double_extensions.dart';
+import '../../core/extensions/height_source_localization.dart';
 import '../../data/models/models.dart';
 
 /// Card widget displaying a single sensor reading
@@ -82,13 +84,13 @@ class SensorCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                source.displayName,
+                source.localizedName(context),
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               Text(
-                _getSourceDescription(),
+                source.localizedDescription(context),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(
                     context,
@@ -120,7 +122,7 @@ class SensorCard extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'Sensor not available',
+              'sensors.notAvailable'.tr(),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.error,
               ),
@@ -151,7 +153,7 @@ class SensorCard extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'Waiting for data...',
+              'sensors.waitingForData'.tr(),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(
                   context,
@@ -209,22 +211,26 @@ class SensorCard extends StatelessWidget {
         children: [
           _buildDetailRow(
             context,
-            'Accuracy',
+            'sensors.accuracy'.tr(),
             measurement!.accuracy != null
-                ? '±${measurement!.accuracy!.toStringAsFixed(1)} m'
-                : 'Unknown',
+                ? 'sensors.accuracyValue'.tr(
+                    namedArgs: {
+                      'value': measurement!.accuracy!.toStringAsFixed(1),
+                    },
+                  )
+                : 'sensors.unknown'.tr(),
           ),
           const Divider(height: 16),
           _buildDetailRow(
             context,
-            'Last Update',
-            _formatTime(measurement!.timestamp),
+            'sensors.lastUpdate'.tr(),
+            _formatTime(context, measurement!.timestamp),
           ),
           const Divider(height: 16),
           _buildDetailRow(
             context,
-            'Reliability',
-            measurement!.isReliable ? 'High' : 'Low',
+            'sensors.reliability'.tr(),
+            measurement!.isReliable ? 'sensors.high'.tr() : 'sensors.low'.tr(),
           ),
         ],
       ),
@@ -262,7 +268,7 @@ class SensorCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
-          'Unavailable',
+          'sensors.unavailable'.tr(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Theme.of(context).colorScheme.error,
             fontWeight: FontWeight.w500,
@@ -279,7 +285,7 @@ class SensorCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
-          'Loading',
+          'sensors.loadingStatus'.tr(),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Colors.orange,
             fontWeight: FontWeight.w500,
@@ -295,7 +301,9 @@ class SensorCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        measurement!.isReliable ? 'Active' : 'Low Quality',
+        measurement!.isReliable
+            ? 'sensors.active'.tr()
+            : 'sensors.lowQuality'.tr(),
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
           color: measurement!.isReliable ? Colors.green : Colors.orange,
           fontWeight: FontWeight.w500,
@@ -330,31 +338,22 @@ class SensorCard extends StatelessWidget {
     }
   }
 
-  String _getSourceDescription() {
-    switch (source) {
-      case HeightSource.gps:
-        return 'Satellite-based altitude';
-      case HeightSource.barometer:
-        return 'Atmospheric pressure sensor';
-      case HeightSource.api:
-        return 'Terrain elevation data';
-      case HeightSource.unknown:
-        return 'Unknown source';
-    }
-  }
-
-  String _formatTime(DateTime time) {
+  String _formatTime(BuildContext context, DateTime time) {
     final now = DateTime.now();
     final diff = now.difference(time);
 
     if (diff.inSeconds < 10) {
-      return 'Just now';
+      return 'time.justNow'.tr();
     } else if (diff.inSeconds < 60) {
-      return '${diff.inSeconds}s ago';
+      return 'time.secondsAgo'.tr(
+        namedArgs: {'count': diff.inSeconds.toString()},
+      );
     } else if (diff.inMinutes < 60) {
-      return '${diff.inMinutes}m ago';
+      return 'time.minutesAgo'.tr(
+        namedArgs: {'count': diff.inMinutes.toString()},
+      );
     } else {
-      return '${diff.inHours}h ago';
+      return 'time.hoursAgo'.tr(namedArgs: {'count': diff.inHours.toString()});
     }
   }
 }

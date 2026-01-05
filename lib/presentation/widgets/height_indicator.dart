@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/extensions/double_extensions.dart';
+import '../../core/extensions/height_source_localization.dart';
 import '../../data/models/models.dart';
 import '../blocs/blocs.dart';
 
@@ -76,7 +78,7 @@ class _LoadingContent extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Text(
-          'Loading...',
+          'height.loading'.tr(),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(
               context,
@@ -117,7 +119,7 @@ class _HeightContent extends StatelessWidget {
               ),
             ),
             Text(
-              source.displayName,
+              source.localizedName(context),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(
                   context,
@@ -165,7 +167,7 @@ class _NoDataContent extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Text(
-          'No altitude data',
+          'height.noAltitudeYet'.tr(),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(
               context,

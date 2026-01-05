@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../blocs/blocs.dart';
 import '../../widgets/widgets.dart';
 
@@ -133,7 +134,7 @@ class _HomePageState extends State<HomePage> {
               const Icon(Icons.location_off, size: 48, color: Colors.red),
               const SizedBox(height: 16),
               Text(
-                'Location Permission Required',
+                'permission.locationRequired'.tr(),
                 style: Theme.of(context).textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),
@@ -155,7 +156,9 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 child: Text(
-                  state.isPermanent ? 'Open Settings' : 'Grant Permission',
+                  state.isPermanent
+                      ? 'permission.openSettings'.tr()
+                      : 'permission.grantPermission'.tr(),
                 ),
               ),
               const SizedBox(height: 8),
@@ -165,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                     const StartLocationTracking(),
                   );
                 },
-                child: const Text('Retry'),
+                child: Text('permission.retry'.tr()),
               ),
             ],
           ),
@@ -195,13 +198,13 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Location Services Disabled',
+                'permission.serviceDisabled'.tr(),
                 style: Theme.of(context).textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
-                'Please enable location services to use this app.',
+                'permission.enableLocation'.tr(),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(
                     context,
@@ -216,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                     const OpenLocationSettings(),
                   );
                 },
-                child: const Text('Open Settings'),
+                child: Text('permission.openSettings'.tr()),
               ),
               const SizedBox(height: 8),
               TextButton(
@@ -225,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                     const StartLocationTracking(),
                   );
                 },
-                child: const Text('Retry'),
+                child: Text('permission.retry'.tr()),
               ),
             ],
           ),

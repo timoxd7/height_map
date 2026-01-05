@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../core/extensions/double_extensions.dart';
+import '../../../core/extensions/height_source_localization.dart';
 import '../../../data/models/models.dart';
 import '../../blocs/blocs.dart';
 import '../../widgets/sensor_card.dart';
@@ -14,7 +16,7 @@ class HeightDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Altitude Details'),
+        title: Text('height.altitudeDetails'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -45,6 +47,15 @@ class HeightDetailsPage extends StatelessWidget {
   }
 }
 
+class _LoadingText extends StatelessWidget {
+  const _LoadingText();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('height.loadingSensorData'.tr());
+  }
+}
+
 class _LoadingView extends StatelessWidget {
   const _LoadingView();
 
@@ -56,7 +67,7 @@ class _LoadingView extends StatelessWidget {
         children: [
           CircularProgressIndicator(),
           SizedBox(height: 16),
-          Text('Loading sensor data...'),
+          _LoadingText(),
         ],
       ),
     );
@@ -79,12 +90,12 @@ class _InitialView extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'No altitude data yet',
+            'height.noAltitudeYet'.tr(),
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
           Text(
-            'Data will appear when sensors are ready',
+            'height.dataWillAppear'.tr(),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(
                 context,
@@ -114,7 +125,10 @@ class _ErrorView extends StatelessWidget {
             color: Theme.of(context).colorScheme.error,
           ),
           const SizedBox(height: 16),
-          Text('Error', style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            'height.error'.tr(),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -150,7 +164,7 @@ class _LoadedView extends StatelessWidget {
 
           // Sensors Section
           Text(
-            'Sensor Readings',
+            'sensors.readings'.tr(),
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -226,7 +240,7 @@ class _LoadedView extends StatelessWidget {
               const Icon(Icons.terrain, color: Colors.white, size: 24),
               const SizedBox(width: 8),
               Text(
-                'Current Altitude',
+                'height.currentAltitude'.tr(),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: Colors.white.withValues(alpha: 0.9),
                 ),
@@ -249,7 +263,7 @@ class _LoadedView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    'meters',
+                    'height.meters'.tr(),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.white.withValues(alpha: 0.8),
                     ),
@@ -270,7 +284,13 @@ class _LoadedView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    'Source: ${bestSource?.displayName ?? "Unknown"}',
+                    'height.source'.tr(
+                      namedArgs: {
+                        'source':
+                            bestSource?.localizedName(context) ??
+                            'sensors.unknown'.tr(),
+                      },
+                    ),
                     style: Theme.of(
                       context,
                     ).textTheme.bodySmall?.copyWith(color: Colors.white),
@@ -297,7 +317,7 @@ class _LoadedView extends StatelessWidget {
             ),
           ] else
             Text(
-              'No altitude data available',
+              'height.noAltitudeData'.tr(),
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Colors.white.withValues(alpha: 0.8),
               ),
@@ -329,7 +349,7 @@ class _LoadedView extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'About Altitude Sensors',
+                'sensors.aboutSensors'.tr(),
                 style: Theme.of(
                   context,
                 ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -339,20 +359,20 @@ class _LoadedView extends StatelessWidget {
           const SizedBox(height: 12),
           _buildInfoItem(
             context,
-            'GPS',
-            'Uses satellite signals. Accuracy varies (typically ±10-50m). Works outdoors.',
+            'sensors.gps.name'.tr(),
+            'sensors.gps.info'.tr(),
           ),
           const SizedBox(height: 8),
           _buildInfoItem(
             context,
-            'Barometer',
-            'Measures air pressure. Very responsive to changes, but needs calibration. Affected by weather.',
+            'sensors.barometer.name'.tr(),
+            'sensors.barometer.info'.tr(),
           ),
           const SizedBox(height: 8),
           _buildInfoItem(
             context,
-            'Elevation API',
-            'Uses terrain elevation data. Most accurate for ground level, but requires internet.',
+            'sensors.api.name'.tr(),
+            'sensors.api.info'.tr(),
           ),
         ],
       ),

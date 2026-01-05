@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Carte des altitudes"
+  },
+  "home": {
+    "centerOnUser": "Centrer sur la position de l'utilisateur"
+  },
+  "permission": {
+    "locationRequired": "Autorisation de localisation requise",
+    "openSettings": "Ouvrir les paramètres",
+    "grantPermission": "Accorder l'autorisation",
+    "retry": "Réessayer",
+    "serviceDisabled": "Services de localisation désactivés",
+    "enableLocation": "Veuillez activer les services de localisation pour utiliser cette application."
+  },
+  "height": {
+    "altitudeDetails": "Détails de l'altitude",
+    "currentAltitude": "Altitude actuelle",
+    "meters": "mètres",
+    "source": "Source : {source}",
+    "noAltitudeData": "Aucune donnée d'altitude disponible",
+    "noAltitudeYet": "Pas encore de données d'altitude",
+    "dataWillAppear": "Les données apparaîtront lorsque les capteurs seront prêts",
+    "loading": "Chargement...",
+    "loadingSensorData": "Chargement des données des capteurs...",
+    "error": "Erreur"
+  },
+  "elevation": {
+    "selectedPoint": "Point sélectionné",
+    "elevation": "Élévation",
+    "difference": "Différence",
+    "fetchingData": "Récupération des données d'élévation...",
+    "higherThanPosition": "Plus haut que votre position",
+    "lowerThanPosition": "Plus bas que votre position"
+  },
+  "sensors": {
+    "readings": "Lectures des capteurs",
+    "notAvailable": "Capteur non disponible",
+    "waitingForData": "En attente des données...",
+    "accuracy": "Précision",
+    "accuracyValue": "±{value} m",
+    "unknown": "Inconnu",
+    "lastUpdate": "Dernière mise à jour",
+    "reliability": "Fiabilité",
+    "high": "Haute",
+    "low": "Basse",
+    "unavailable": "Non disponible",
+    "loadingStatus": "Chargement",
+    "active": "Actif",
+    "lowQuality": "Qualité faible",
+    "aboutSensors": "À propos des capteurs d'altitude",
+    "gps": {
+      "name": "GPS",
+      "description": "Altitude par satellite",
+      "info": "Utilise les signaux satellites. La précision varie (généralement ±10-50m). Fonctionne en extérieur."
+    },
+    "barometer": {
+      "name": "Baromètre",
+      "description": "Capteur de pression atmosphérique",
+      "info": "Mesure la pression de l'air. Très réactif aux changements, mais nécessite un étalonnage. Affecté par la météo."
+    },
+    "api": {
+      "name": "API d'élévation",
+      "description": "Données d'élévation du terrain",
+      "info": "Utilise les données d'élévation du terrain. Plus précis au niveau du sol, mais nécessite internet."
+    },
+    "unknownSource": {
+      "name": "Inconnu",
+      "description": "Source inconnue"
+    }
+  },
+  "time": {
+    "justNow": "À l'instant",
+    "secondsAgo": "il y a {count}s",
+    "minutesAgo": "il y a {count}m",
+    "hoursAgo": "il y a {count}h"
+  },
+  "units": {
+    "m": "m",
+    "ft": "ft"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Height Map"
+  },
+  "home": {
+    "centerOnUser": "Center on user location"
+  },
+  "permission": {
+    "locationRequired": "Location Permission Required",
+    "openSettings": "Open Settings",
+    "grantPermission": "Grant Permission",
+    "retry": "Retry",
+    "serviceDisabled": "Location Services Disabled",
+    "enableLocation": "Please enable location services to use this app."
+  },
+  "height": {
+    "altitudeDetails": "Altitude Details",
+    "currentAltitude": "Current Altitude",
+    "meters": "meters",
+    "source": "Source: {source}",
+    "noAltitudeData": "No altitude data available",
+    "noAltitudeYet": "No altitude data yet",
+    "dataWillAppear": "Data will appear when sensors are ready",
+    "loading": "Loading...",
+    "loadingSensorData": "Loading sensor data...",
+    "error": "Error"
+  },
+  "elevation": {
+    "selectedPoint": "Selected Point",
+    "elevation": "Elevation",
+    "difference": "Difference",
+    "fetchingData": "Fetching elevation data...",
+    "higherThanPosition": "Higher than your position",
+    "lowerThanPosition": "Lower than your position"
+  },
+  "sensors": {
+    "readings": "Sensor Readings",
+    "notAvailable": "Sensor not available",
+    "waitingForData": "Waiting for data...",
+    "accuracy": "Accuracy",
+    "accuracyValue": "±{value} m",
+    "unknown": "Unknown",
+    "lastUpdate": "Last Update",
+    "reliability": "Reliability",
+    "high": "High",
+    "low": "Low",
+    "unavailable": "Unavailable",
+    "loadingStatus": "Loading",
+    "active": "Active",
+    "lowQuality": "Low Quality",
+    "aboutSensors": "About Altitude Sensors",
+    "gps": {
+      "name": "GPS",
+      "description": "Satellite-based altitude",
+      "info": "Uses satellite signals. Accuracy varies (typically ±10-50m). Works outdoors."
+    },
+    "barometer": {
+      "name": "Barometer",
+      "description": "Atmospheric pressure sensor",
+      "info": "Measures air pressure. Very responsive to changes, but needs calibration. Affected by weather."
+    },
+    "api": {
+      "name": "Elevation API",
+      "description": "Terrain elevation data",
+      "info": "Uses terrain elevation data. Most accurate for ground level, but requires internet."
+    },
+    "unknownSource": {
+      "name": "Unknown",
+      "description": "Unknown source"
+    }
+  },
+  "time": {
+    "justNow": "Just now",
+    "secondsAgo": "{count}s ago",
+    "minutesAgo": "{count}m ago",
+    "hoursAgo": "{count}h ago"
+  },
+  "units": {
+    "m": "m",
+    "ft": "ft"
+  }
+}
