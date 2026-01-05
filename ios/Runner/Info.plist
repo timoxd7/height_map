@@ -45,5 +45,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Location permissions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Height Map needs your location to show your current position on the map and determine your altitude.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Height Map needs your location to show your current position on the map and determine your altitude, even when running in the background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Height Map needs your location to track altitude changes in the background.</string>
 </dict>
 </plist>
