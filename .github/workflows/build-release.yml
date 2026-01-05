@@ -22,8 +22,8 @@ jobs:
       - name: Get latest tag and calculate next version
         id: version
         run: |
-          # Get all tags starting with 'v' followed by a number
-          LATEST_TAG=$(git tag -l "v[0-9]*" | sort -V | tail -n 1)
+          # Get all tags starting with 'v' followed by numeric versions only
+          LATEST_TAG=$(git tag -l | grep -E '^v[0-9]+$' | sort -V | tail -n 1)
           
           if [ -z "$LATEST_TAG" ]; then
             # No tags found, start with v1
@@ -89,8 +89,8 @@ jobs:
         id: changelog
         run: |
           if [ -z "${{ steps.version.outputs.last_tag }}" ]; then
-            # First release, get all commits
-            CHANGELOG=$(git log --oneline --pretty=format:"- %s (%h)" | head -20)
+            # First release, get recent commits (limit to 50 for readability)
+            CHANGELOG=$(git log --oneline --pretty=format:"- %s (%h)" | head -50)
             echo "## Changes" > changelog.txt
             echo "" >> changelog.txt
             echo "Initial release" >> changelog.txt
@@ -105,8 +105,6 @@ jobs:
             # Try to get merged PRs info
             echo "### Pull Requests" >> changelog.txt
             git log ${{ steps.version.outputs.last_tag }}..HEAD --oneline --grep="Merge pull request" --pretty=format:"- %s" >> changelog.txt || true
-            echo "" >> changelog.txt
-            
             echo "" >> changelog.txt
             echo "### Commits" >> changelog.txt
             git log ${{ steps.version.outputs.last_tag }}..HEAD --oneline --pretty=format:"- %s (%h)" >> changelog.txt
